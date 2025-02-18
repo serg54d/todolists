@@ -14,10 +14,7 @@ const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement)
 root.render(
     <BrowserRouter>
         <Provider store={store}>
-            <Routes>
-                <Route path="/" element={<App />} />
-                <Route path="/login" element={<Login/>} />
-            </Routes>
+            <App/>
         </Provider>
     </BrowserRouter>,
 )
