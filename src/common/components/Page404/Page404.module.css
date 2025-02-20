@@ -10,3 +10,11 @@
   margin: 0;
   text-transform: uppercase;
 }
+
+.buttonWrapper {
+	text-align: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 15px;
+}

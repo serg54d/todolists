@@ -1,3 +1,4 @@
+import { RequestStatus } from "app/app-reducer"
 import { tasksReducer, TasksStateType } from "../tasks-reducer"
 import { addTodolistAC, todolistsReducer, DomainTodolist, FilterValuesType, addTodolistTC } from "../todolists-reducer"
 
@@ -5,12 +6,14 @@ test("ids should be equals", () => {
     const startTasksState: TasksStateType = {}
     const startTodolistsState: DomainTodolist[] = []
     const filter: FilterValuesType = 'all'
+	const entityStatus: RequestStatus = 'idle'
     const todolist = {
         id: "123",
         title: "132",
         addedDate: "12313",
         order: 0,
         filter,
+		entityStatus
     }
 
 	

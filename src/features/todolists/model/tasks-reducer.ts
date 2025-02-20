@@ -1,5 +1,10 @@
 import { v1 } from "uuid"
-import { AddTodolistActionType, changeTodolistEntityStatusAC, RemoveTodolistActionType } from "./todolists-reducer"
+import {
+    AddTodolistActionType,
+    changeTodolistEntityStatusAC,
+    ClearTodosDataActionType,
+    RemoveTodolistActionType,
+} from "./todolists-reducer"
 import { todolistsApi } from "../api/todolistsApi"
 import { AppDispatch, RootState } from "app/store"
 import { tasksApi } from "../api/tasksApi"
@@ -105,6 +110,10 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
             return copyState
         }
 
+        case "CLEAR-TODOS-DATA": {
+            return {}
+        }
+
         default:
             return state
     }
@@ -125,12 +134,12 @@ export const addTaskAC = (payload: { task: DomainTask }) => {
     } as const
 }
 
-export const changeTaskStatusAC = (payload: { task: DomainTask }) => {
-    return {
-        type: "CHANGE_TASK_STATUS",
-        payload,
-    } as const
-}
+// export const changeTaskStatusAC = (payload: { task: DomainTask }) => {
+//     return {
+//         type: "UPDATE-TASK",
+//         payload,
+//     } as const
+// }
 
 // export const changeTaskStatusAC = (payload: { taskId: string; status: TaskStatus; todolistId: string }) => {
 //     return {
@@ -139,12 +148,12 @@ export const changeTaskStatusAC = (payload: { task: DomainTask }) => {
 //     } as const
 // }
 
-export const changeTaskTitleAC = (payload: { task: DomainTask }) => {
-    return {
-        type: "CHANGE_TASK_TITLE",
-        payload,
-    } as const
-}
+// export const changeTaskTitleAC = (payload: { task: DomainTask }) => {
+//     return {
+//         type: "UPDATE-TASK",
+//         payload,
+//     } as const
+// }
 
 export const setTasksAC = (payload: { todolistId: string; tasks: DomainTask[] }) => {
     return {
@@ -163,20 +172,21 @@ export const updateTaskAC = (payload: { task: DomainTask }) => {
 // Actions types
 export type RemoveTaskActionType = ReturnType<typeof removeTaskAC>
 export type AddTaskActionType = ReturnType<typeof addTaskAC>
-export type ChangeTaskStatusActionType = ReturnType<typeof changeTaskStatusAC>
-export type ChangeTaskTitleActionType = ReturnType<typeof changeTaskTitleAC>
+// export type ChangeTaskStatusActionType = ReturnType<typeof changeTaskStatusAC>
+// export type ChangeTaskTitleActionType = ReturnType<typeof changeTaskTitleAC>
 export type SetTasksActionType = ReturnType<typeof setTasksAC>
 export type UpdateTaskActionType = ReturnType<typeof updateTaskAC>
 
 type ActionsType =
     | RemoveTaskActionType
     | AddTaskActionType
-    | ChangeTaskStatusActionType
-    | ChangeTaskTitleActionType
+    // | ChangeTaskStatusActionType
+    // | ChangeTaskTitleActionType
     | AddTodolistActionType
     | RemoveTodolistActionType
     | SetTasksActionType
     | UpdateTaskActionType
+    | ClearTodosDataActionType
 
 // Thunks
 

@@ -12,8 +12,16 @@ import { useAppSelector } from "common/hooks/useAppSelector"
 import { getTheme } from "common/theme/theme"
 import { Controller, SubmitHandler, useForm } from "react-hook-form"
 import s from "./Login.module.css"
+import { loginTC } from "features/auth/model/auth-reducer"
+import { useAppDispatch } from "common/hooks/useAppDispatch"
+import { AppDispatch } from "app/store"
+import { useDispatch, useSelector } from "react-redux"
+import { selectIsLoggedIn } from "features/auth/authSelectors"
+import { Navigate, useNavigate } from "react-router"
+import { Path } from "common/routing/Routing"
+import { useEffect } from "react"
 
-type Inputs = {
+export type Inputs = {
     email: string
     password: string
     rememberMe: boolean
@@ -22,6 +30,10 @@ type Inputs = {
 export const Login = () => {
     const themeMode = useAppSelector(selectThemeMode)
     const theme = getTheme(themeMode)
+    const dispatch = useAppDispatch()
+
+    const isLoggedIn = useSelector(selectIsLoggedIn)
+    const navigate = useNavigate()
 
     const {
         register,
@@ -30,11 +42,22 @@ export const Login = () => {
         formState: { errors },
         reset,
         control,
-    } = useForm<Inputs>({ defaultValues: { email: "serg54d@gmail.com", password: "", rememberMe: false } })
+    } = useForm<Inputs>({ defaultValues: { email: "serg54d@bk.ru", password: "", rememberMe: false } })
     const onSubmit: SubmitHandler<Inputs> = (data) => {
-        console.log(data)
+        dispatch(loginTC(data))
         reset()
     }
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            navigate(Path.Main)
+        }
+    }, [isLoggedIn])
+
+    // if (isLoggedIn) {
+    // 	debugger
+    // 	return <Navigate to={Path.Main}/>
+    // }
 
     return (
         <Grid container justifyContent={"center"}>
@@ -74,7 +97,19 @@ export const Login = () => {
                                 })}
                             />
                             {errors.email && <span className={s.errorMessage}>{errors.email.message}</span>}
-                            <TextField type="password" label="Password" margin="normal" {...register("password")} />
+                            <TextField
+                                type="password"
+                                label="Password"
+                                margin="normal"
+                                {...register("password", {
+                                    required: "Password is required",
+                                    minLength: {
+                                        value: 3,
+                                        message: "Password must be at least 3 characters long",
+                                    },
+                                })}
+                            />
+							{errors.password && <span className={s.errorMessage}>{errors.password.message}</span>}
                             <FormControlLabel
                                 label={"Remember me"}
                                 control={
